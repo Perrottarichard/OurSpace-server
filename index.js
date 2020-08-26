@@ -8,10 +8,11 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 const router = require('./router')
 
 const app = express()
-const server = http.createServer(app)
-const io = socketio(server)
-
 app.use(cors());
+const server = http.createServer(app)
+const io = socketio(server, { origins: "https://r-space.netlify.app" })
+
+
 app.use(router)
 
 io.on('connection', (socket) => {
