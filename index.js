@@ -1,19 +1,12 @@
 const express = require('express')
-const socketio = require('socket.io')
+const socketio = require('socket.io')(server, { origins: '*:*' });
 const http = require('http')
 const router = require('./router')
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 const cors = require('cors')
 
 const app = express()
-var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-  next();
-}
-app.use(allowCrossDomain);
+app.use(cors());
 
 const PORT = process.env.PORT || 5000
 
