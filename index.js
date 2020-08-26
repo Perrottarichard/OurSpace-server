@@ -9,7 +9,8 @@ const router = require('./router')
 const app = express()
 app.use(cors());
 const server = http.createServer(app)
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, { allowUpgrades: false });
+
 
 
 app.use(router)
