@@ -5,14 +5,14 @@ const cors = require('cors')
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 
-const router = require('./router')
-
 const app = express()
+app.use(cors());
 const server = http.createServer(app)
 const io = socketio(server)
 
-app.use(cors());
-app.use(router)
+app.get('/', (req, res, next) => {
+  res.send('server running')
+})
 
 io.on('connection', (socket) => {
   console.log('ws connected')
