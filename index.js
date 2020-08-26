@@ -10,10 +10,12 @@ const app = express()
 app.use(cors());
 const server = http.createServer(app)
 const io = require("socket.io")(server);
-
-
-
 app.use(router)
+
+const PORT = process.env.PORT || 5000
+server.listen(PORT, () => {
+  `Server listening on port ${PORT}`
+})
 
 io.on('connection', (socket) => {
   console.log('ws connected')
@@ -43,8 +45,4 @@ io.on('connection', (socket) => {
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
     }
   })
-})
-const PORT = process.env.PORT || 5000
-server.listen(PORT, () => {
-  `Server listening on port ${PORT}`
 })
