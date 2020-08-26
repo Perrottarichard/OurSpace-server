@@ -1,13 +1,13 @@
 const http = require('http')
 const express = require('express')
-const cors = require('cors')
+// const cors = require('cors')
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 
 const router = require('./router')
 
 const app = express()
-app.use(cors());
+// app.use(cors());
 const server = http.createServer(app)
 const io = require("socket.io")(server, {
   handlePreflightRequest: (req, res) => {
