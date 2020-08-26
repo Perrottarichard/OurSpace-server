@@ -10,7 +10,8 @@ const router = require('./router')
 const app = express()
 app.use(cors());
 const server = http.createServer(app)
-const io = socketio(server, { origins: "https://r-space.netlify.app" })
+const io = socketio(server)
+io.origins('https://r-space.netlify.app')
 
 
 app.use(router)
