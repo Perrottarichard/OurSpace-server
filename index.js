@@ -1,27 +1,18 @@
-const express = require('express')
-const socketio = require('socket.io')(server, {
-  handlePreflightRequest: (req, res) => {
-    const headers = {
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
-      "Access-Control-Allow-Credentials": true
-    };
-    res.writeHead(200, headers);
-    res.end();
-  }
-})
 const http = require('http')
-const router = require('./router')
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
+const express = require('express')
+const socketio = require('socket.io')
 const cors = require('cors')
 
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
+
+const router = require('./router')
+
 const app = express()
-app.use(cors());
-
-const PORT = process.env.PORT || 5000
-
 const server = http.createServer(app)
 const io = socketio(server)
+
+app.use(cors());
+app.use(router)
 
 io.on('connection', (socket) => {
   console.log('ws connected')
@@ -51,10 +42,7 @@ io.on('connection', (socket) => {
     }
   })
 })
-
-
-app.use(router)
-
+const PORT = process.env.PORT || 5000
 server.listen(PORT, () => {
   `Server listening on port ${PORT}`
 })
