@@ -1,25 +1,15 @@
 const http = require('http')
 const express = require('express')
-// const cors = require('cors')
+const cors = require('cors')
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 
 const router = require('./router')
 
 const app = express()
-// app.use(cors());
+app.use(cors());
 const server = http.createServer(app)
-const io = require("socket.io")(server, {
-  handlePreflightRequest: (req, res) => {
-    const headers = {
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Origin": "https://r-space.netlify.app",
-      "Access-Control-Allow-Credentials": true
-    };
-    res.writeHead(200, headers);
-    res.end();
-  }
-});
+const io = require("socket.io")(server);
 
 
 app.use(router)
