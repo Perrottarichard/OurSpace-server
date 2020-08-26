@@ -6,7 +6,20 @@ const router = require('./router')
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 
 const app = express()
-app.use(cors())
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
 
 const PORT = process.env.PORT || 5000
 
