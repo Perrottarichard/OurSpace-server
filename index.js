@@ -1,6 +1,6 @@
 const http = require('http')
 const express = require('express')
-// const cors = require('cors')
+
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users')
 
@@ -8,7 +8,7 @@ const router = require('./router')
 
 const app = express()
 app.use(router)
-// app.use(cors());
+
 const server = http.createServer(app)
 const io = require("socket.io")(server, { origins: 'https://r-space.netlify.app' });
 
