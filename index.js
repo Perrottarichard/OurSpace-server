@@ -14,7 +14,15 @@ app.use(router)
 const server = http.createServer(app)
 
 
-const io = require("socket.io")(server, { origins: 'https://r-space.netlify.app' });
+const io = require("socket.io")(server, {
+  serveClient: false,
+  // below are engine.IO options
+  origins: '*:*',
+  transports: ['polling'],
+  pingInterval: 10000,
+  pingTimeout: 5000,
+  cookie: false
+});
 
 
 const PORT = process.env.PORT || 5000
