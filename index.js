@@ -14,8 +14,8 @@ app.use(router)
 const server = http.createServer(app)
 
 
-const io = require("socket.io")(server, { transports: ['websocket', 'polling'] });
-io.origins(['https://r-space.netlify.app'])
+const io = require("socket.io")(server);
+io.origins(['https://r-space.netlify.app/'])
 
 
 const PORT = process.env.PORT || 5000
