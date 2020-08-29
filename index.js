@@ -16,9 +16,9 @@ const server = http.createServer(app)
 
 const io = require("socket.io")(server, {
   serveClient: false,
-  // below are engine.IO options
   origins: '*:*',
   transports: ['polling'],
+  // transports: ['websocket'],
   pingInterval: 10000,
   pingTimeout: 5000,
   cookie: false
@@ -32,20 +32,19 @@ server.listen(PORT, () => {
 
 io.on('connection', (socket) => {
   console.log('new client connected')
-
-
   socket.on('join', ({ name, room }) => {
-    if (name && room) {
+    if (name, room) {
       const { user } = addUser({ id: socket.id, name, room })
-      socket.join(user.room)
-      socket.emit('message', { user: 'robot', text: `hi ${user.name}, welcome to ${user.room}` })
-      socket.broadcast.to(user.room).emit('message', { user: 'robot', text: `${user.name} has joined` })
-
-      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
-    } else {
-      window.alert('Please reload the page')
+      console.log(user)
+      if (!user) {
+        socket.emit('exception', { errorMessage: `Sorry, we couldn't connect you because your name is already being used in room "${room}." Please exit and choose another name.` })
+      } else {
+        socket.join(user.room)
+        socket.emit('message', { user: 'robot', text: `hi ${user.name}. welcome to ${user.room}!` })
+        socket.broadcast.to(user.room).emit('message', { user: 'robot', text: `${user.name}'s here!` })
+        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
+      }
     }
-
   })
 
   socket.on('sendMessage', (message) => {
@@ -56,6 +55,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     const user = removeUser(socket.id)
     if (user) {
+      console.log(user)
       io.to(user.room).emit('message', { user: 'robot', text: `${user.name} has left` })
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) })
     }
