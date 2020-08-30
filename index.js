@@ -17,8 +17,8 @@ const server = http.createServer(app)
 const io = require("socket.io")(server, {
   serveClient: false,
   origins: '*:*',
-  // transports: ['polling'],
-  transports: ['websocket'],
+  transports: ['polling'],
+  // transports: ['websocket'],
   pingInterval: 10000,
   pingTimeout: 5000,
   cookie: false
